@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        /* * {
+            outline: 1px dotted red;
+        } */
+        .container {
+            margin-top: 40px;
+        }
+        .header h2 {
+            display: inline-block;
+            vertical-align: top;
+        }
+        .header a {
+            display: inline-block;
+            vertical-align: top;
+            float: right;
+        }
+        h4 {
+            display: inline-block;
+            margin: 20px 0px 20px 0px;
+        }
+        .navigation {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Hello, {{user.first_name}}!</h2>
+            <a href="/logout">Log Out</a>
+        </div>
+        <hr>
+        <h4>Your Trip Schedules</h4>
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Travel Start Date</th>
+                    <th scope="col">Travel End Date</th>
+                    <th scope="col">Plan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in confirmed_trips %}
+                <tr>
+                    <td><a href="/show_trip/{{trip.id}}">{{trip.destination}}</a></td>
+                    <td>{{trip.travel_from}}</td>
+                    <td>{{trip.travel_to}}</td>
+                    <td>{{trip.description}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h4>Other User's Travel Plans</h4>
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Travel Start Date</th>
+                    <th scope="col">Travel End Date</th>
+                    <th scope="col">Do You Want to Join?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in other_trips %}
+                <tr>
+                    <td>{{trip.added_by.first_name}} {{trip.added_by.last_name}}</td>
+                    <td><a href="/show_trip/{{trip.id}}">{{trip.destination}}</a></td>
+                    <td>{{trip.travel_from}}</td>
+                    <td>{{trip.travel_to}}</td>
+                    {% if request.session.id != trip.added_by.id %}
+                    <td><a href="/join_trip/{{trip.id}}">Join</a></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr>
+        <div class="navigation"><a href="/add_trip">Add Travel Plan</a></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>
